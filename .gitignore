@@ -1,0 +1,20 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+
+# RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Data
+data_CIQ/
+data_processed/
+
+# OS
+.DS_Store
+Thumbs.db
