@@ -1,12 +1,8 @@
 rm(list = ls())
 
-options(encoding = "UTF-8")
+source('R-code/source_code/libraries.R')
 
-library(readxl)
-library(writexl)
-library(data.table)
-library(dplyr)
-library(lubridate)
+options(encoding = "UTF-8")
 
 #### THIS FILE WORKS AS FOLLOWS ####
 
@@ -23,7 +19,7 @@ library(lubridate)
 
 
 #### 1. CONSTRUCT ASSET-OWNER DATA ####
-d1 <- read_xlsx('../CIQ_download/all_units_by_owner.xlsx', sheet = 'values') %>% as.data.table()
+d1 <- read_xlsx('data_CIQ/all_units_by_owner.xlsx', sheet = 'values') %>% as.data.table()
 
 # easier to access
 setnames(d1, 
@@ -58,7 +54,7 @@ own_unit <- own_unit[mw>0,]
 
 
 #### 2. CONSTRUCT ASSET-TECH DATA ####
-d2 <- read_xlsx('../CIQ_download/tech_detail_unit_level-by_unit.xlsx', sheet = 'values') %>% as.data.table()
+d2 <- read_xlsx('data_CIQ/tech_detail_unit_level-by_unit.xlsx', sheet = 'values') %>% as.data.table()
 # easier to access
 setnames(d2, c(names(d2)[1:12],'Fuel Type', 'Is the Plant Offshore? Yes/No', 'Country / Region Name', 'Country/Region Code', 'Primary Fuel Type', 'Primary Fuel Group'),
          c('plant', 'unit_id', 'tech_type', 'gen_tech', 'tech_detail', 'plant_id', 'name_mw', 'oper_mw', 
@@ -133,7 +129,7 @@ own_unit <- own_unit[unit_id %in% unique(tech_unit$unit_id),]
 # 2. tech_unit
 
 # next, we need to map owners to ultimate parents
-d3 <- read_xlsx('../CIQ_download/owners_information.xlsx', sheet = 'values') %>% as.data.table()
+d3 <- read_xlsx('data_CIQ/owners_information.xlsx', sheet = 'values') %>% as.data.table()
 new_cols <- c('entity_id', 'name', 'short', 'mi_key', 'isin', 'lei', 'type', 'establ', 'incorp', 'status', 
               'sic', 'ind', 'ind_prim', 'ind1', 'ind2', 'ind3', 'ind4', 
               'geo', 'country_name', 'country', 'subregion', 'region', 'state_own', 'priv_comp_own', 'pub_comp_own',
@@ -259,52 +255,15 @@ unit_detail <- merge(par_unit, tech_unit)
 unit_detail[, oper_mw := NULL]
 
 #### 5. SAVE all data ####
-write.csv(par_unit, 'R-data-output/unit_parent_year.csv', row.names = F)
-write.csv(own_unit, 'R-data-output/unit_owner_year.csv', row.names = F)
-write.csv(tech_unit, 'R-data-output/unit_tech_info.csv', row.names = F)
-write.csv(tech_unit_clean, 'R-data-output/unit_tech_info_detail.csv', row.names = F)
-write.csv(firmdat, 'R-data-output/parent_info.csv', row.names = F)
-write.csv(firmdat_detail, 'R-data-output/parent_info_detail.csv', row.names = F)
-write.csv(unit_detail, 'R-data-output/unit_timeseries_detail.csv', row.names = F)
+write.csv(par_unit, 'data_processed/R-data-output/unit_parent_year.csv', row.names = F)
+write.csv(own_unit, 'data_processed/R-data-output/unit_owner_year.csv', row.names = F)
+write.csv(tech_unit, 'data_processed/R-data-output/unit_tech_info.csv', row.names = F)
+write.csv(tech_unit_clean, 'data_processed/R-data-output/unit_tech_info_detail.csv', row.names = F)
+write.csv(firmdat, 'data_processed/R-data-output/parent_info.csv', row.names = F)
+write.csv(firmdat_detail, 'data_processed/R-data-output/parent_info_detail.csv', row.names = F)
+write.csv(unit_detail, 'data_processed/R-data-output/unit_timeseries_detail.csv', row.names = F)
 
 
 # contains all firms (direct owners + parents)
-write.csv(d3, 'R-data-output/all_firms_info_detail.csv.csv', row.names = F)
+write.csv(d3, 'data_processed/R-data-output/all_firms_info_detail.csv', row.names = F)
 
-
-
-# # basic checks
-# # dat <- merge(par_unit, firmdat)
-# # check <- (dat[year==2022, sum(mw), by='industry']) 
-# # check[, share := V1/sum(V1)*100]
-# # tail( check[order(V1), ], 15)
-# firmdat$status %>% table(., useNA = 'ifany')
-# firmdat$type %>% table(., useNA = 'ifany')
-# firmdat_detail$ind %>% table(., useNA = 'ifany')
-# firmdat_detail$ind_prim %>% table(., useNA = 'ifany') %>% sort
-# firmdat_detail$ind2 %>% table(., useNA = 'ifany') %>% sort
-# 
-# plot( firmdat_detail$establ ~ firmdat_detail$incorp )
-# 
-# 
-# 
-# #### 4. Create datasets for parent level ####
-# 
-# 
-# 
-# # check data
-# #tech_unit_clean
-# all(tech_unit$unit_id %in% par_unit$unit_id )
-# # basic stats
-# unique(par_unit$ultimate_id) %>% length
-# unique(own_unit$owner_id) %>% length
-# 
-# # 
-# unique(par_unit$unit_id) %>% length
-# unique(own_unit$unit_id) %>% length
-# 
-# sum(!(unique(par_unit$unit_id) %in% unique(own_unit$unit_id)) )
-# sum(!(unique(own_unit$unit_id) %in% unique(par_unit$unit_id)) )
-# 
-# par_unit[unit_id %in% unique(par_unit$unit_id)[!(unique(par_unit$unit_id) %in% unique(own_unit$unit_id))], ]
-# own_unit[unit_id %in% unique(par_unit$unit_id)[!(unique(par_unit$unit_id) %in% unique(own_unit$unit_id))], ]

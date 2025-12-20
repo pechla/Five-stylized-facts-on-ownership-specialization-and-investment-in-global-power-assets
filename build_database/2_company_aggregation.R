@@ -1,8 +1,8 @@
 rm(list = ls())
 
-source('../../R-code/source_code/libraries.R')
+source('R-code/source_code/libraries.R')
 
-units <- fread('R-data-output/unit_timeseries_detail.csv')
+units <- fread('data_processed/R-data-output/unit_timeseries_detail.csv')
 
 # total firm size
 firm_size_l <- units[, .(total_mw = sum(mw)) , by = c('firm_id', 'year')]
@@ -47,7 +47,7 @@ d <- merge(d, tech_own, by = c('firm_id', 'year'), all = T)
 d <- merge(d, tech_invest, by = c('firm_id', 'year'), all = T)
 setnafill(d, fill = 0)
 
-write.csv(d, 'R-data-output/firm_tech_year.csv', row.names = F)
+write.csv(d, 'data_processed/R-data-output/firm_tech_year.csv', row.names = F)
 
 # firm_year_invest <- unit_diff_w[, lapply(.SD, function(x) sum(x>0)), by = 'firm_id', .SDcols = yrs_ch[-1]]
 # firm_year_retire <- unit_diff_w[, lapply(.SD, function(x) sum(x<0)), by = 'firm_id', .SDcols = yrs_ch[-1]]
