@@ -1,24 +1,47 @@
+# READ AND WRITE XLSX FILES
 library(readxl)
 library(writexl)
+
+# VISUALIZATION TOOLS
 library(ggplot2); theme_set(theme_bw())
-library(dplyr)
-library(data.table)
 library(gridExtra)
 library(grid)
 library(scales)
-library(stargazer)
+library(ggrepel)
+library(viridis)
+library(readr)
+
+# DATA ANALYSIS
+library(data.table)
+library(dplyr)
+library(car)
+library(lubridate)
+library(tidyr)
+
+# INEQUALITY METRICS
 library(ineq)
-library(xtable)
+
+# LOGISTIC + LINEAR REGRESSION
 library(mfx)
-library(texreg)
 library(effects)
 library(sandwich)
-library(car)
-library(ggrepel)
-library(lubridate)
-library(readr)
+
+# OUTPUT TABLES AND REGRESSION RESULTS
+library(stargazer)
+library(xtable)
+library(texreg)
+
+# FITTING LOGNORMAL MIXTURE MODEL
 library(mixtools)
-library(tidyr)
+
+# DECISION TREE
+library(tree)
+library(rpart)
+library(rpart.plot)
+
+
+
+#### OTHER UNIVERSAL HELPERS ####
 
 # tech size buckets in portfolio
 bucket_fun <- function(x){
@@ -44,5 +67,5 @@ names(tech_col) <- tech_rankings
 
 fnorm <- function(x) x/sum(x)
 
-yrs <- 2001:2023
+yrs <- 2001:2024
 yrs_ch <- as.character(yrs)

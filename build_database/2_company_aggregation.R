@@ -49,8 +49,6 @@ setnafill(d, fill = 0)
 
 write.csv(d, 'data_processed/R-data-output/firm_tech_year.csv', row.names = F)
 
-# firm_year_invest <- unit_diff_w[, lapply(.SD, function(x) sum(x>0)), by = 'firm_id', .SDcols = yrs_ch[-1]]
-# firm_year_retire <- unit_diff_w[, lapply(.SD, function(x) sum(x<0)), by = 'firm_id', .SDcols = yrs_ch[-1]]
 
 
 
