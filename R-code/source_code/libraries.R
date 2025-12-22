@@ -4,10 +4,11 @@ library(writexl)
 
 # VISUALIZATION TOOLS
 library(ggplot2); theme_set(theme_bw())
+library(ggtext)
+library(ggrepel)
 library(gridExtra)
 library(grid)
 library(scales)
-library(ggrepel)
 library(viridis)
 library(readr)
 
