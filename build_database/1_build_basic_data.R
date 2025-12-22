@@ -46,7 +46,7 @@ own_unit_l_raw <- do.call(rbind, apply( own_unit_raw_short, 1, function(x) data.
 Sys.time()- tt # Time difference of 34.32764 secs
 
 # make first version of owner-asset level data
-own_unit <- own_unit_l_raw[year <=2023 & year >= 2001, .(mw=sum(mw)), by = c('unit_id','owner_id', 'year')]
+own_unit <- own_unit_l_raw[year <=2024 & year >= 2001, .(mw=sum(mw)), by = c('unit_id','owner_id', 'year')]
 own_unit <- own_unit[mw>0,]
 
 
@@ -205,7 +205,7 @@ par_unit_raw_v1[!is.na(lev_final), ultimate_id := lev_final]
 # for multi-owned subsidiaries we use asset-level data to aggregate
 
 # now aggregate the parent-asset data
-par_unit <- par_unit_raw_v1[year <=2023 & year >= 2001, .(mw=sum(mw)), by = c('unit_id', 'ultimate_id', 'year')]
+par_unit <- par_unit_raw_v1[year <=2024 & year >= 2001, .(mw=sum(mw)), by = c('unit_id', 'ultimate_id', 'year')]
 par_unit <- par_unit[mw>0,]
 
 # restrict owner-asset data to only include tech-mapped assets

@@ -17,6 +17,8 @@ library(car)
 library(ggrepel)
 library(lubridate)
 library(readr)
+library(mixtools)
+library(tidyr)
 
 # tech size buckets in portfolio
 bucket_fun <- function(x){

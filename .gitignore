@@ -15,6 +15,10 @@ Thumbs.db
 data_CIQ/
 data_processed/
 
+# schematic hurdle model figure
+offline_source/ 
+
+
 # OS
 .DS_Store
 Thumbs.db
