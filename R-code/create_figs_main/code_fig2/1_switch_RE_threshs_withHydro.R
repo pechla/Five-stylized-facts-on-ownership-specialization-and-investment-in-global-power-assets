@@ -84,3 +84,42 @@ for (k in 1:length(RE_THRESH)) {
 resagg <- do.call(rbind, reslist2)
 resdetail <- do.call(rbind, reslist1)
 resagg$plotshare <- paste0('>', resagg$re_thresh)
+
+
+
+# =============================================================================
+# Transition statistics for main text
+# =============================================================================
+
+# Number of fossil-dominated firms (≥50% fossil for at least 5 years)
+ff_share_check <- phys[, c('firm_id', 'FF_share')]
+nr_ff <- sum(table(ff_share_check[FF_share > 0.5, firm_id]) >= 5)
+
+# Transition statistics at 50% renewable threshold
+trans_stats <- resagg[re_thresh == 0.5]
+nr_transitioning <- trans_stats$count
+share_transitioning <- trans_stats$count / nr_ff
+gw_at_transition <- trans_stats$mw_transyear / 1000
+gw_in_2024 <- trans_stats$mw_23 / 1000
+capacity_share <- trans_stats$mw_23 / phys[year == 2024, sum(total_mw)]
+
+# Print results
+cat("\n")
+cat("=== Corporate Energy Transition Statistics ===\n")
+cat("\n")
+cat(sprintf("Fossil-dominated firms (≥50%% fossil for 5+ years):
+  %d firms\n", nr_ff))
+cat("\n")
+cat(sprintf("Transitioning firms (to ≥50%% renewables):
+             %d firms (%.1f%% of fossil-dominated firms)\n", 
+            nr_transitioning, share_transitioning * 100))
+cat("\n")
+cat(sprintf("Capacity owned by transitioning firms:
+             %.0f GW at transition year
+             %.0f GW in 2024
+             %.1f%% of global capacity\n", 
+            gw_at_transition, gw_in_2024, capacity_share * 100))
+cat("\n")
+
+
+

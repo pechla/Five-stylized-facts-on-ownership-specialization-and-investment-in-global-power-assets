@@ -18,7 +18,6 @@ data_processed/
 # schematic hurdle model figure
 offline_source/ 
 
-
 # OS
 .DS_Store
 Thumbs.db

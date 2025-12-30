@@ -156,6 +156,6 @@ dev.off()
 
 
 
-## numbers in text
+## numbers in main text
 dphys2[variable %in% c('Coal', 'Gas', 'Oil'), sum(value), by = 'year']
 # write.csv(RESDET, file = 'data_processed/data_temp/transitioning_firms.csv')
