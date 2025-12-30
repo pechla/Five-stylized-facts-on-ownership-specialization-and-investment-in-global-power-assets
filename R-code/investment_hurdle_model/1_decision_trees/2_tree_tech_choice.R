@@ -236,7 +236,9 @@ minrow3 <- which.min(cptab3[, "xerror"])
 se_threshold3 <- cptab3[minrow3, "xerror"] + 1*cptab3[minrow3, "xstd"]
 se_cp <- max(cptab3[cptab3[, "xerror"] <= se_threshold3, "CP"])
 tree3_pruned <- prune(tree3, cp = se_cp)
-tree3_snipped <- tree3_pruned
+
+tree3_snipped <- snip.rpart(tree3_pruned, toss = c(7) )
+#tree3_snipped <- tree3_pruned
 
 rpart.plot(tree3_snipped,
            tweak = 1.2,

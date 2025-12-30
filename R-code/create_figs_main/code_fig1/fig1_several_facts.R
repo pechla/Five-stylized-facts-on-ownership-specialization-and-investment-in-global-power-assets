@@ -32,7 +32,6 @@ ggplot(d1, aes(y=type, x=V2*100, shape = `Share based on:`, fill =`Share based o
   ) +
   xlab('%') + ylab('Share of ...') +
   guides(fill = guide_legend(reverse=TRUE))
-p1
 
 p2 <- ggplot(d2, aes(x = install_rel*100,  y = tech, fill = `Firm focus:`)) + 
   geom_col() +

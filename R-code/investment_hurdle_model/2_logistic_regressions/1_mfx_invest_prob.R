@@ -18,7 +18,7 @@ dreg$log_total_mw <- log10(dreg$total_mw)
 DREGL <- list(
   Full = dreg,
   decade = dreg[year %in% 2014:2023, ],      # note that no investment decisions in 2024
-  quinquennium = dreg[year %in% 2019:2023, ]
+  quinquennium = dreg[year %in% 2018:2023, ]
 )
 
 

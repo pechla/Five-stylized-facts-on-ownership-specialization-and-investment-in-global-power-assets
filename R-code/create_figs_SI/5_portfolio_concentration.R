@@ -29,7 +29,7 @@ ggplot(max2tech_long, aes(x = share)) +
   geom_histogram(bins = 30, fill = "#69b3a2", color = "black", alpha = 0.7) +
   geom_vline(data = median_values, aes(xintercept = median_share), 
              color = "red", linetype = "dashed", size = 1) +
-  geom_text(data = median_values, aes(x = median_share, y = 140, label = paste0('Median = ',round(median_share, 1),'%')), 
+  geom_text(data = median_values, aes(x = median_share, y = 110, label = paste0('Median = ',round(median_share, 1),'%')), 
             color = "red", vjust = -0.5, hjust = c(1.1,-.1), size = 6) +
   facet_wrap(~ type, scales = "free_x") +
   labs(title = "A. 2-technology firms",
@@ -95,7 +95,7 @@ ggplot(max5tech_long, aes(x = share)) +
   geom_vline(data = median_values, aes(xintercept = median_share), 
              color = "red", linetype = "dashed", size = 1) +
   geom_text(data = median_values, aes(x = median_share, y = 100, label = paste0('Median = ',round(median_share, 1),'%')), 
-            color = "red", vjust = -0.5, hjust = c(1.1,-.1), size = 6) +
+            color = "red", vjust = -0.5, hjust = c(1.1,-.5), size = 6) +
   facet_wrap(~ type, scales = 'free_x') +
   labs(title = "C. >4-technology firms",
        x = "Technology portfolio share (in %)",

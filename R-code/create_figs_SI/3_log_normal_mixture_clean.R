@@ -16,8 +16,8 @@ cat("Mixture of", k, "lognormal distributions:\n")
 for(i in 1:k) {
   cat("Component", i, ":\n")
   cat("  Proportion:", round(mixture_fit$lambda[i], 4), "\n")
-  cat("  Meanlog:", round(mixture_fit$mu[i], 4), "\n")
-  cat("  SDlog:", round(mixture_fit$sigma[i], 4), "\n")
+  cat("  Mean:", round(exp(mixture_fit$mu[i]), 4), "\n")
+  cat("  SD:", round(exp(mixture_fit$sigma[i]), 4), "\n")
 }
 
 
