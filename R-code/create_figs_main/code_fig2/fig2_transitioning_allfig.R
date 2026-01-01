@@ -40,7 +40,7 @@ p1 <- ggplot( RES, aes(x=re_thresh*100, y=count, color = type, shape = type) ) +
     legend.title = element_blank(),
     legend.key.width = unit(2, 'cm')
   ) +
-  ylab('# transitioning firms') + xlab('Renewable portfolio share in % (2021-2023)')
+  ylab('# transitioning firms') + xlab('Renewable portfolio share in % (2022-2024)')
 
 RES[type == 'Including hydro' & re_thresh == 0.5,mw_23/count]
 RES[type == 'Excluding hydro' & re_thresh == 0.5, mw_23/count]
@@ -60,7 +60,7 @@ p2 <- ggplot( RES, aes(x=re_thresh*100, y=mw_23/1000, color = type, shape = type
     legend.title = element_blank(),
     legend.key.width = unit(2, 'cm')
   ) +
-  ylab('GW owned by transitioning firms') + xlab('Renewable portfolio share in % (2021-2023)')
+  ylab('GW owned by transitioning firms') + xlab('Renewable portfolio share in % (2022-2024)')
 
 
 #### capacity evolution plot ####

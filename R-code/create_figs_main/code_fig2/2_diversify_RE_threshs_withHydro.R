@@ -11,8 +11,6 @@ phys <- cbind(phys,tech_share)
 
 RE <- tech_rank_short[c(1:7)] # hydro included, no waste, no nuclear
 FF <- tech_rankings[10:12]
-#HY <- 'Hydro'
-#NU <- 'Nuclear'
 
 phys$FF_share <- rowSums( tech_share[, .SD, .SDcols = paste0(FF,'_share')] )
 phys$RE_share <- rowSums( tech_share[, .SD, .SDcols = paste0(RE,'_share')] )
@@ -20,7 +18,7 @@ phys$RE_share <- rowSums( tech_share[, .SD, .SDcols = paste0(RE,'_share')] )
 
 FF_THRESH <- 0.5
 
-years <- (2001:2023)
+years <- (2001:2021)
 rolling_windows <- embed(years, 5)[, 5:1]
 rollff_list <- list()
 for (i in 1:nrow(rolling_windows)) {
