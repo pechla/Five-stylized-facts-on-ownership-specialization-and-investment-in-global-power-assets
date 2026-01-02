@@ -22,20 +22,19 @@ rolling_windows <- embed(years, 5)[, 5:1]
 rollff_list <- list()
 for (i in 1:nrow(rolling_windows)) {
   rollff_list[[i]] <- phys[year %in% rolling_windows[i,], sum(FF_share > FF_THRESH) >=5, by = 'firm_id']
-  setnames( rollff_list[[i]] , 'V1', as.character(rolling_windows[i,5]) )
-  
+  rollff_list[[i]]$year <- rolling_windows[i,5]
 }
 
 
-FF_roll_indicator <- Reduce(function(x, y) merge(x, y, by = "firm_id"), rollff_list)
-FF_indicator <- cbind(FF_roll_indicator[,1], FFany = apply( FF_roll_indicator[, .SD, .SDcols = as.character(years[-c(1:(ncol(rolling_windows)-1))])], 1, function(x) any(x) ) )
+# Did firm satisfy FF criteria in a given rolling window?
+FF_year_indicator <- Reduce(rbind, rollff_list)       
+setnames(FF_year_indicator, 'V1', 'FF') 
+# Was firm a FF firm in any rolling window?
+FF_indicator <- na.omit(FF_year_indicator)[, any(FF), by = 'firm_id']
+setnames(FF_indicator, 'V1', 'FFany') 
 
-FF_year_indicator <- melt( FF_roll_indicator, 
-                           id.vars = 'firm_id', variable.name = 'year', value.name = 'FF' )
-FF_year_indicator$year <- as.integer(as.character(FF_year_indicator$year))
 
-
-#RE_THRESH <- c(0.5, 0.6, 0.7, 0.8, 0.9)
+#RE_THRESH <- c(seq(0.5,.999, by = 0.05), 0.999)
 reslist1 <- reslist2 <- list()
 for (k in 1:length(RE_THRESH)) {
   
@@ -81,10 +80,24 @@ resagg <- do.call(rbind, reslist2)
 resdetail <- do.call(rbind, reslist1)
 resagg$plotshare <- paste0('>', resagg$re_thresh)
 
-# ## results in text
-# ff_share_check <- phys[, c('firm_id', c('FF_share'))]
-# nr.ff <- sum( table( ff_share_check[FF_share>0.5, firm_id]  ) >= 5 )
-# resagg[re_thresh==0.5, count] / nr.ff
-# resagg[re_thresh==0.5, mw_transyear] / 1000
-# resagg[re_thresh==0.5, mw_23] / phys[year==2023, sum(total_mw)]
-# resdetail[re_thresh== 0.5, mw_23] %>% median
+
+
+# =============================================================================
+# Transition statistics for main text
+# =============================================================================
+
+# Transition statistics at 50% renewable threshold
+trans_stats <- resagg[re_thresh == 0.5]
+nr_transitioning <- trans_stats$count
+gw_in_2024 <- trans_stats$mw_23 / 1000
+
+# Print results
+cat("\n")
+cat("=== Corporate Energy Transition Statistics ===\n")
+cat("\n")
+cat(sprintf("Transitioning firms (to ≥50%% renewables):
+             %d firms\n", nr_transitioning))
+cat("\n")
+cat(sprintf("Capacity owned by transitioning firms:
+             %.0f GW in 2024",gw_in_2024))
+cat("\n")

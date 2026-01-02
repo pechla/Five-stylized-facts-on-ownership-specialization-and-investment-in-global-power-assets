@@ -23,20 +23,17 @@ rolling_windows <- embed(years, 5)[, 5:1]
 rollff_list <- list()
 for (i in 1:nrow(rolling_windows)) {
   rollff_list[[i]] <- phys[year %in% rolling_windows[i,], sum(FF_share > FF_THRESH) >=5, by = 'firm_id']
-  setnames( rollff_list[[i]] , 'V1', as.character(rolling_windows[i,5]) )
-  
+  rollff_list[[i]]$year <- rolling_windows[i,5]
 }
 
+# Did firm satisfy FF criteria in a given rolling window?
+FF_year_indicator <- Reduce(rbind, rollff_list)       
+setnames(FF_year_indicator, 'V1', 'FF') 
+# Was firm a FF firm in any rolling window?
+FF_indicator <- na.omit(FF_year_indicator)[, any(FF), by = 'firm_id']
+setnames(FF_indicator, 'V1', 'FFany') 
 
-FF_roll_indicator <- Reduce(function(x, y) merge(x, y, by = "firm_id"), rollff_list)
-FF_indicator <- cbind(FF_roll_indicator[,1], FFany = apply( FF_roll_indicator[, .SD, .SDcols = as.character(years[-c(1:(ncol(rolling_windows)-1))])], 1, function(x) any(x) ) )
-
-FF_year_indicator <- melt( FF_roll_indicator, 
-                           id.vars = 'firm_id', variable.name = 'year', value.name = 'FF' )
-FF_year_indicator$year <- as.integer(as.character(FF_year_indicator$year))
-
-
-#RE_THRESH <- seq(0.5,1, by = 0.05)
+#RE_THRESH <- c(seq(0.5,.999, by = 0.05), 0.999)
 reslist1 <- reslist2 <- list()
 for (k in 1:length(RE_THRESH)) {
   
@@ -90,8 +87,7 @@ resagg$plotshare <- paste0('>', resagg$re_thresh)
 # =============================================================================
 
 # Number of fossil-dominated firms (≥50% fossil for at least 5 years)
-ff_share_check <- phys[, c('firm_id', 'FF_share')]
-nr_ff <- sum(table(ff_share_check[FF_share > 0.5, firm_id]) >= 5)
+nr_ff <- FF_indicator[FFany==T] %>% nrow()
 
 # Transition statistics at 50% renewable threshold
 trans_stats <- resagg[re_thresh == 0.5]
@@ -121,3 +117,38 @@ cat("\n")
 
 
 
+# Transition statistics at 75% renewable threshold
+trans_stats <- resagg[re_thresh == 0.75]
+nr_transitioning <- trans_stats$count
+gw_in_2024 <- trans_stats$mw_23 / 1000
+
+# Print results
+cat(sprintf("Number of FF firms transitioning to 75 perc RE: %d firms\n", nr_transitioning) )
+cat(sprintf("Capacity owned by FF firms transitioning to 75 perc RE: %.1f GW\n", gw_in_2024) )
+
+
+
+# Transition statistics at 99.9% renewable threshold
+trans_stats <- resagg[re_thresh == 0.999]
+nr_transitioning <- trans_stats$count
+gw_in_2024 <- trans_stats$mw_23 / 1000
+
+
+# top completely transitioned firms
+firmdetail <- fread('data_processed/R-data-output/parent_info.csv')
+toptransition <- resdetail[re_thresh==0.999, ][order(mw_23, decreasing = TRUE)][,firm_id]#[1:3]
+fulltrans <- merge( firmdetail[firm_id %in% toptransition, ], phys[year == 2024,.(firm_id, total_mw, RE_share)] )[order(total_mw)]
+fulltrans[, c("short", "status", "country", "state_own") := NULL]
+
+industries_transitioned <- fulltrans$industry %>% table %>% sort
+
+nr.electric <- nrow( fulltrans[industry %in% c('Electric Utilities', 'IPPs')] )
+size.electric <- fulltrans[industry %in% c('Electric Utilities', 'IPPs'), sum(total_mw)]
+
+# Print results
+cat(sprintf("Number of FF firms transitioning to 99.9 perc RE: %d firms\n", nr_transitioning) )
+cat(sprintf("Capacity owned by FF firms transitioning to 99.9 perc RE: %.1f GW\n", gw_in_2024) )
+cat("Industries of completely transitioned firms:\n", paste(industries_transitioned, names(industries_transitioned), '\n') )
+
+cat(sprintf("Number of Electricity Firms transitioning to 99.9 perc RE: %d firms\n", nr.electric) )
+cat(sprintf("Capacity owned by Electricity firms transitioning to 99.9 perc RE: %.1f MW\n", size.electric) )

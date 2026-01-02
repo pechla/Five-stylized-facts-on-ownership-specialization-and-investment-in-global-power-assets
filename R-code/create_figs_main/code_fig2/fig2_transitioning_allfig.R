@@ -1,7 +1,7 @@
 rm(list=ls())
 source('R-code/source_code/libraries.R')
 
-RE_THRESH <- seq(0.5,1, by = 0.05)
+RE_THRESH <- c(seq(0.5,.999, by = 0.05), 0.999)
 
 source('R-code/create_figs_main/code_fig2/1_switch_RE_threshs_withHydro.R')
 RES1 <- copy( resagg) 
@@ -153,9 +153,3 @@ grid.text("C", x = 0.01, y = .56, gp = gpar(fontsize = 25, fontface = "bold"))
 grid.text("D", x = 0.51, y = .56, gp = gpar(fontsize = 25, fontface = "bold"))
 dev.off()
 
-
-
-
-## numbers in main text
-dphys2[variable %in% c('Coal', 'Gas', 'Oil'), sum(value), by = 'year']
-# write.csv(RESDET, file = 'data_processed/data_temp/transitioning_firms.csv')

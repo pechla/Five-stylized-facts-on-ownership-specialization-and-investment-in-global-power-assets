@@ -157,7 +157,6 @@ techtrans <- data.table( focus1 = phys3[year == transyear, focus], focus2 = phys
 swl <- techtrans %>% table %>% as.data.table
 swl[focus1 == 'FF-Mix', focus1:='FF-\nMix']
 swl$focus1 <- factor(swl$focus1, levels = c('Gas', 'Coal', 'Gas+Coal', 'Oil', 'FF-\nMix') )
-#swl <- swl[!(focus2 %in% c('Geothermal', 'Storage')),]
 
 # add total
 total_count <- swl[,.(N=sum(N)), by = 'focus1']
@@ -193,9 +192,9 @@ p2 <-
 p2
 
 pdf('R-code/create_figs_main/fig/nr_tech_trans1.pdf', width = 18, height = 6)
-grid.arrange(p1.2,p2, ncol=2, widths = c(0.6,0.9))
+grid.arrange(p2,p1.2, ncol=2, widths = c(0.9,0.6))
 grid.text("A", x = 0.01, y = .97, gp = gpar(fontsize = 25, fontface = "bold"))
-grid.text("B", x = 0.43, y = .97, gp = gpar(fontsize = 25, fontface = "bold"))
+grid.text("B", x = 0.62, y = .97, gp = gpar(fontsize = 25, fontface = "bold"))
 dev.off()
 
 
@@ -206,7 +205,6 @@ dev.off()
 source('R-code/create_figs_main/code_fig2/2_diversify_RE_threshs_withHydro.R')
 phys1 <- PHYS[firm_id %in% res1$firm_id, .SD, .SDcols = c('year', 'firm_id', 'focus', tech_rank_short)]
 phys1 <- merge(phys1, res1[,c('firm_id', 'transyear')], all = T)
-#phys1[, maxyear := max(year), by = 'firm_id']
 
 firmfoc <- phys1[year == transyear, c('firm_id', 'focus')]
 setnames(firmfoc, 'focus', 'focus1')
@@ -251,7 +249,6 @@ RE_THRESH <- 0.75
 source('R-code/create_figs_main/code_fig2/1_switch_RE_threshs_withHydro.R')
 phys2 <- PHYS[firm_id %in% resdetail$firm_id, .SD, .SDcols = c('year', 'firm_id', 'focus', tech_rank_short)]
 phys2 <- merge(phys2, resdetail[,c('firm_id', 'transyear')], all = T)
-#phys2[, maxyear := max(year), by = 'firm_id']
 firmfoc <- phys2[year == transyear, c('firm_id', 'focus')]
 setnames(firmfoc, 'focus', 'focus1')
 phys2 <- merge(phys2, firmfoc, by = 'firm_id', all=T)
@@ -337,40 +334,3 @@ grid.text("A: Renewable share (0.5, 0.75]:", x = 0.13, y = .98, gp = gpar(fontsi
 grid.text("B: Renewable share > 0.75:", x = 0.57, y = .98, gp = gpar(fontsize = 19, fontface = "bold"))
 dev.off()
 
-
-
-# ## check firms
-# par <- fread('data_CIQ/build_database_v2/R-data-output/parent_info.csv')
-# 
-# transmix <- merge( transfoc1[focus == 'FF-Mix'], PHYS[year == 2023,c('firm_id','total_mw')] )
-# transmix <- transmix[order(total_mw)]
-# 
-# transmix
-# par[firm_id %in% c(4072853, 6623651, 10029256, 6618044, 6618044)]
-# 
-# par[firm_id %in% c(6906533)]
-# 
-# PHYS[firm_id == 4011129, ] 
-# 
-# 
-# par[firm_id %in% transfoc2[focus == 'Gas', ]$firm_id, ]
-# 
-# PHYS[firm_id == 10029256, ] 
-# 
-# # ORSTED > 0.75
-# transmix2 <- merge( transfoc2[focus == 'FF-Mix'], PHYS[year == 2023,c('firm_id','total_mw')] )
-# transmix2 <- transmix2[order(total_mw)]
-# 
-# 
-# PHYS[firm_id==4554125, .SD, .SDcols = c('year', 'total_mw', tech_rank_short, 'focus')]
-# 
-# 
-# 
-# 
-# ## hydro
-# ddd <- data.table( focus1 = phys3[year == transyear, focus], phys3[year == maxyear, c('focus', 'firm_id')]  )
-# setnames(ddd, 'focus', 'focus2')
-# 
-# par[ firm_id %in% ddd[focus2 == 'Hydro' & focus1 == 'Oil', firm_id] ]
-# 
-# 
