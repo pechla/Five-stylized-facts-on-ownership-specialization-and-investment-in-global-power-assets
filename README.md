@@ -44,7 +44,6 @@ Supplementary files containing S&P entity and unit identifiers for dataset recon
 │   ├── data_temp/               # Intermediate data used during database construction
 │   ├── Ember/                   # External Ember data inputs
 │   └── R-data-output/           # Final processed datasets used in the analysis
-├── offline_source/              # Additional PDFs and figures used for illustration
 ├── R-code/                      # Main analysis and figure-generation code
 │   ├── create_figs_main/        # Scripts to reproduce figures in the main text
 │   │   ├── code_fig0/
