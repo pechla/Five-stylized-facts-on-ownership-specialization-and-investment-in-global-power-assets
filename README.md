@@ -1,4 +1,4 @@
-## Replication Code: Five Empirical Facts on Ownership, Specialization, and Investment in Global Power Assets
+## Replication Code: Five stylized facts on ownership, specialization, and investment in global power assets
 
 ### Overview
 
