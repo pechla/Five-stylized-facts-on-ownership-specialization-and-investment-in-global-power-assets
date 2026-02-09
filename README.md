@@ -4,7 +4,7 @@
 
 This repository contains the replication code for:
 
-**Pichler, A. (2026). "Asset ownership, technological specialization and firm-level transition dynamics: Five empirical facts."**
+**Pichler, A. (2026). "Five stylized facts on ownership, specialization, and investment in global power assets". Energy Economics. https://doi.org/10.1016/j.eneco.2026.109193**
 
 The paper establishes five empirical facts about corporate ownership, technological specialization, and investment behavior in the global power sector using data on more than 150,000 generation assets owned by approximately 24,000 firms worldwide (2001–2024).
 
@@ -61,15 +61,13 @@ Supplementary files containing S&P entity and unit identifiers for dataset recon
 │   └── source_code/
 │       └── libraries.R          # Central list of required R packages
 ├── empirical_investment_dynamics_git.Rproj
-├── LICENSE
 └── README.md
 ```
 
 ### Replication Instructions
 
 1. **Obtain data access**
-   - Obtain access to S&P Capital IQ Pro Energy.
-   - Contact the author for supplementary Excel files containing entity and unit identifiers (subject to S&P licensing conditions).
+   - Obtain access to S&P Capital IQ Pro Energy and supplementary Excel files containing entity and unit identifiers.
 2. **Recreate the raw data extracts**
    - Use the Excel formulas in `data_CIQ_scripts/CIQ_formulas.xlsx` to extract the required data from S&P Capital IQ.
    - Export the data from S&P and save the files in `data_CIQ/` using the filenames referenced in the scripts in `build_database/`.
@@ -94,15 +92,17 @@ If you use this code, please cite:
 
 ```bibtex
 @article{pichler2026facts,
-  title   = {Asset ownership, technological specialization and firm-level transition dynamics: Five empirical facts},
-  author  = {Pichler, Anton},
-  journal = {},
-  year    = {2026}
+title = {Five stylized facts on ownership, specialization, and investment in global power assets},
+journal = {Energy Economics},
+pages = {109193},
+year = {2026},
+doi = {https://doi.org/10.1016/j.eneco.2026.109193},
+author = {Anton Pichler}
 }
 ```
 
 ### License
 
-The analysis code in this repository is released under the **MIT License**. See `LICENSE` for details.
+The analysis code in this repository is released under the Creative Commons Attribution 4.0 International.
 
 
